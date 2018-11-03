@@ -11,6 +11,7 @@ function AccordionScreen() {
     {panels.map((panel, index) => (
       <AccordionPanel
         ref={refs && refs[index]}
+        index={index}
         key={index}
         label={panel}
         isOpen={currentIndex === index}

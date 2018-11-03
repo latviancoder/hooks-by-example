@@ -1,4 +1,4 @@
-import React, { useRef, createRef, useImperativeMethods, useState, useEffect } from 'react';
+import React, { useRef, createRef, useMemo, useImperativeMethods, useState, useEffect } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import FoobarIpsum from 'foobar-ipsum';
 
@@ -33,7 +33,9 @@ function useAccordion(panelsCount) {
 
 const AccordionPanel = React.forwardRef((props, ref) => {
   const containerRef = useRef();
-  const textRef = useRef();
+
+  // We don't want to generate random text every time this component renders
+  const randomText = useMemo(() => generateRandomText(), []);
 
   useImperativeMethods(ref, () => ({
     scrollIntoView: () => {
@@ -44,7 +46,7 @@ const AccordionPanel = React.forwardRef((props, ref) => {
   return <div onClick={props.onClick} ref={containerRef}>
     <div className="accordion-label">{props.label}</div>
     {props.isOpen &&
-    <div>{generateRandomText()}</div>}
+    <div>{randomText}</div>}
   </div>;
 });
 
