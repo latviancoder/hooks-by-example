@@ -2,5 +2,20 @@ Hooks. People love them, people hate them. But one is for sure - hooks are there
 
 The most important feature of hooks is sharing _reusable functionality_. In the past it was achieved using _mixins_, which were later deprecated in favor of patterns like _render props_ and _higher order components_. But these patterns introduced additional complexity and resulted in something now called _wrapper hell_.
 
-## Test
+## What is this?
 
+The purpose of this reposity is to provide beginner-friendly real-world examples of different hooks usage. Here are some of them:
+
+* Accordion [[code](src/components/accordion), [demo](https://awesome-hooks.now.sh/accordion)]
+* Todo list [[code](src/components/todo-list), [demo](https://awesome-hooks.now.sh/todo-list)]
+* Very basic form validation library [[code](src/components/form-library), [demo](https://awesome-hooks.now.sh/form-library)]
+
+This application is built using `create-react-app`, so feel free to clone the repo and play with examples yourself.
+
+```
+yarn install
+yarn start
+```
+## Todo
+
+More examples, more comments. Pull requests and overall suggestions are welcome.
