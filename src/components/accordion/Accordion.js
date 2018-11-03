@@ -1,6 +1,5 @@
-import React, { useRef, createRef, useMemo, useImperativeMethods, useState, useEffect } from 'react';
+import React, { useRef, createRef, forwardRef, useImperativeMethods, useState, useEffect } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
-import FoobarIpsum from 'foobar-ipsum';
 
 function useAccordion(panelsCount) {
   const [currentIndex, setCurrentIndex] = useState();
@@ -15,14 +14,14 @@ function useAccordion(panelsCount) {
       refs[i] = createRef();
     }
     setRefs(refs);
-  }, []);
+  }, []); // run once
 
   useEffect(() => {
     // Scroll current accordion panel into view
     if (currentIndex !== undefined) {
       refs[currentIndex].current.scrollIntoView();
     }
-  }, [currentIndex]);
+  }, [currentIndex]); // Run every time current index changes
 
   function setCurrent(newIndex) {
     setCurrentIndex(currentIndex === newIndex ? undefined : newIndex);
@@ -31,40 +30,30 @@ function useAccordion(panelsCount) {
   return [currentIndex, setCurrent, refs];
 }
 
-const AccordionPanel = React.forwardRef((props, ref) => {
-  const containerRef = useRef();
+// We don't want to re-render this component every time it receives new props
+// We also pass second parameter to this function where we implement our own comparison
+const AccordionPanel = React.memo(
+  forwardRef((props, ref) => {
+    const containerRef = useRef();
 
-  // We don't want to generate random text every time this component renders
-  const randomText = useMemo(() => generateRandomText(), []);
+    useImperativeMethods(ref, () => ({
+      scrollIntoView: () => {
+        scrollIntoView(containerRef.current, { block: 'nearest', scrollMode: 'if-needed' });
+      }
+    }));
 
-  useImperativeMethods(ref, () => ({
-    scrollIntoView: () => {
-      scrollIntoView(containerRef.current, { block: 'nearest', scrollMode: 'if-needed' });
-    }
-  }));
-
-  return <div onClick={props.onClick} ref={containerRef}>
-    <div className="accordion-label">{props.label}</div>
-    {props.isOpen &&
-    <div>{randomText}</div>}
-  </div>;
-});
+    return <div onClick={props.onClick} ref={containerRef}>
+      <div className="accordion-label">{props.label}</div>
+      {props.isOpen &&
+      <div>{props.content}</div>}
+    </div>;
+  }),
+  // practically shouldComponentUpdate, but reversed
+  (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
+);
 
 function Accordion(props) {
   return <div>{props.children}</div>;
-}
-
-function generateRandomNumber(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
-function generateRandomText() {
-  return new FoobarIpsum({
-    size: {
-      sentence: generateRandomNumber(100),
-      paragraph: generateRandomNumber(10)
-    }
-  }).paragraph();
 }
 
 export {
