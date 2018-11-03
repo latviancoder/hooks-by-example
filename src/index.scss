@@ -1,0 +1,49 @@
+@import "../node_modules/normalize.css/normalize.css";
+
+* {
+  box-sizing: border-box;
+}
+
+.main {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.link {
+  color: #3d6eff;
+}
+
+.sidebar {
+  padding: 30px;
+  background: #eee;
+  flex: 0 0 350px;
+  .item {
+    margin-bottom: 30px;
+  }
+
+  .link {
+    display: block;
+  }
+  span {
+    font-size: 11px;
+    color: #333;
+  }
+  pre {
+    display: inline;
+  }
+}
+
+.content {
+  padding: 30px;
+  width: 500px;
+}
+
+.accordion-label {
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px;
+  border: 1px dashed #000;
+  margin-bottom: 5px;
+}

@@ -3,9 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-scripts": "2.1.1"
+    "foobar-ipsum": "^1.0.3",
+    "immer": "^1.7.4",
+    "node-sass": "^4.9.4",
+    "normalize.css": "^8.0.0",
+    "react": "16.7.0-alpha.0",
+    "react-dom": "16.7.0-alpha.0",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "2.1.1",
+    "scroll-into-view-if-needed": "^2.2.20",
+    "simple-react-router": "^0.0.17",
+    "yup": "^0.26.6"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -14,12 +22,25 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "plugins": [
+      "react-hooks"
+    ],
+    "rules": {
+      "react-hooks/rules-of-hooks": "error"
+    }
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^0.0.0"
+  },
+  "now": {
+    "alias": "awesome-hooks.now-sh",
+    "name": "awesome-hooks"
+  }
 }
