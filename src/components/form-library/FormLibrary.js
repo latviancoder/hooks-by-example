@@ -12,14 +12,14 @@ function MyFormLibrary({ children, initialValues, onValuesChanged, onSubmit, val
     }
   }, [values]);
 
-  function handleChange(e) {
+  function handleChange(name, value) {
     updateValues({
       ...values,
-      [e.target.name]: e.target.value
+      [name]: value
     });
     updateErrors({
       ...errors,
-      [e.target.name]: undefined
+      [name]: undefined
     });
   }
 
@@ -37,11 +37,18 @@ function MyFormLibrary({ children, initialValues, onValuesChanged, onSubmit, val
     submitForm();
   }
 
+  function input(name) {
+    return {
+      value: values[name],
+      onChange: (e) => handleChange(name, e.target.value)
+    }
+  }
+
   const ctx = {
     values,
     errors,
-    handleChange,
-    handleSubmit
+    handleSubmit,
+    input
   };
 
   return <FormContext.Provider value={ctx}>

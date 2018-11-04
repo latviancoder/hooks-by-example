@@ -4,25 +4,21 @@ import { object, string } from 'yup';
 import MyFormLibrary, { FormContext } from './FormLibrary';
 
 function MyForm() {
-  const { values, errors, handleChange, handleSubmit } = useContext(FormContext);
+  const { values, errors, handleSubmit, input } = useContext(FormContext);
 
   return <form onSubmit={handleSubmit}>
     <div>
       <input
         placeholder="Email"
-        name="email"
         autoComplete="off"
-        value={values.email}
-        onChange={handleChange}
+        {...input('email')}
       />
       {errors.email && <div>{errors.email}</div>}
     </div>
     <div>
       <input
         placeholder="Name"
-        name="name"
-        value={values.name}
-        onChange={handleChange}
+        {...input('name')}
       />
       {errors.name && <div>{errors.name}</div>}
     </div>
