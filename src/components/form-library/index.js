@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { object, string } from 'yup';
 
 import MyFormLibrary, { FormContext } from './FormLibrary';
 
 function MyForm() {
   const { values, errors, handleSubmit, input } = useContext(FormContext);
+
+  useEffect(() => {
+    console.info('values changed', values);
+  }, [values]);
 
   return <form onSubmit={handleSubmit}>
     <div>
@@ -43,9 +47,6 @@ function Screen() {
     }}
     onSubmit={(values) => {
       alert('success');
-    }}
-    onValuesChanged={(values) => {
-      console.info(values);
     }}
   >
     <MyForm/>

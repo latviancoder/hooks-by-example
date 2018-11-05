@@ -2,15 +2,9 @@ import React, { useState, useEffect, createContext } from "react";
 
 const FormContext = createContext(null);
 
-function MyFormLibrary({ children, initialValues, onValuesChanged, onSubmit, validate }) {
+function MyFormLibrary({ children, initialValues, onSubmit, validate }) {
   const [values, updateValues] = useState(initialValues);
   const [errors, updateErrors] = useState({});
-
-  useEffect(() => {
-    if (typeof onValuesChanged === 'function') {
-      onValuesChanged(values);
-    }
-  }, [values]);
 
   function handleChange(name, value) {
     updateValues({
