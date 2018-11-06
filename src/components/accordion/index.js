@@ -6,12 +6,11 @@ import FoobarIpsum from "foobar-ipsum";
 function AccordionScreen() {
   const panels = [...Array(100).keys()].map(e => `Panel number ${e}`);
 
-  const [currentIndex, setCurrent, refs] = useAccordion(panels.length);
+  const [currentIndex, setCurrent] = useAccordion();
 
   return <Accordion>
     {panels.map((panel, index) => (
       <AccordionPanel
-        ref={refs && refs[index]}
         key={index}
         label={panel}
         content={generateRandomText()}
