@@ -10,7 +10,8 @@ The purpose of this reposity is to provide beginner-friendly real-world examples
 
 * Accordion [[code](src/components/accordion), [demo](https://awesome-hooks.now.sh/accordion)]
 * Todo list [[code](src/components/todo-list), [demo](https://awesome-hooks.now.sh/todo-list)]
-* Very basic form validation library [[code](src/components/form-library), [demo](https://awesome-hooks.now.sh/form-library)]
+* Form validation library [[code](src/components/form-library), [demo](https://awesome-hooks.now.sh/form-library)]
+* Sortable [[code](src/components/sortable), [demo](https://awesome-hooks.now.sh/sortable)]
 
 This application is built using `create-react-app`, so feel free to clone the repo and play with examples yourself.
 
