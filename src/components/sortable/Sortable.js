@@ -16,6 +16,8 @@ const SortableContext = createContext();
 // This custom hook will add React ref to the element and then push respective DOM node to the array on nodes on mount
 function useSortableElement() {
   const ref = useRef(null);
+
+  // TODO use sortableBits to subscribe to only certain parts of context
   const { addNode } = useContext(SortableContext);
 
   useEffect(() => {
@@ -34,6 +36,8 @@ function useSortableElement() {
 // Our component will then be automatically notified about it and rerender
 function useSortable(initialItems) {
   const [items, setItems] = useState(initialItems);
+
+  // TODO use sortableBits to subscribe to only certain parts of context
   const { isDragging, oldIndex, newIndex } = useContext(SortableContext);
 
   useEffect(() => {
