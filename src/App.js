@@ -18,7 +18,7 @@ function App() {
             </Link>
             <span>
               Panels scroll into view if not fully visible when toggled.
-              Using <pre>useImperativeMethods</pre>, <pre>useRef</pre>.
+              Using <pre>useEffect</pre>, <pre>useRef</pre>.
             </span>
           </div>
           <div className="item">

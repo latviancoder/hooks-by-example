@@ -1,54 +1,37 @@
-import React, { useRef, createRef, forwardRef, useImperativeMethods, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import scrollIntoView from 'scroll-into-view-if-needed';
 
-function useAccordion(panelsCount) {
+function useAccordion() {
   const [currentIndex, setCurrentIndex] = useState();
-  const [refs, setRefs] = useState();
-
-  // This part is smelly
-  // https://github.com/facebook/react/issues/14072
-  // TODO rewrite
-  useEffect(() => {
-    let refs = {};
-    for (let i = 0; i <= panelsCount; i++) {
-      refs[i] = createRef();
-    }
-    setRefs(refs);
-  }, []); // run once
-
-  useEffect(() => {
-    // Scroll current accordion panel into view
-    if (currentIndex !== undefined) {
-      refs[currentIndex].current.scrollIntoView();
-    }
-  }, [currentIndex]); // Run every time current index changes
 
   function setCurrent(newIndex) {
     setCurrentIndex(currentIndex === newIndex ? undefined : newIndex);
   }
 
-  return [currentIndex, setCurrent, refs];
+  return [currentIndex, setCurrent];
 }
 
 // We don't want to re-render this component every time it receives new props
 // We also pass second parameter to this function where we implement our own comparison
 const AccordionPanel = React.memo(
-  forwardRef((props, ref) => {
+  props => {
+    console.log(props.label + " rendered");
     const containerRef = useRef();
 
-    useImperativeMethods(ref, () => ({
-      scrollIntoView: () => {
+    useEffect(() => {
+      if (props.isOpen) {
+        console.log(`scroll ${props.label} into view`);
         scrollIntoView(containerRef.current, { block: 'nearest', scrollMode: 'if-needed' });
       }
-    }));
+    });
 
-    return <div onClick={props.onClick} ref={containerRef}>
-      <div className="accordion-label">{props.label}</div>
-      {props.isOpen &&
-      <div>{props.content}</div>}
-    </div>;
-  }),
-  // practically shouldComponentUpdate, but reversed
+    return (
+      <div onClick={props.onClick} ref={containerRef}>
+        <div className="accordion-label">{props.label}</div>
+        {props.isOpen && <div>{props.content}</div>}
+      </div>
+    );
+  }, // practically shouldComponentUpdate, but reversed
   (prevProps, nextProps) => prevProps.isOpen === nextProps.isOpen
 );
 
