@@ -3,7 +3,7 @@ import Sortable, { useSortableElement, useSortable } from './Sortable';
 
 function Item(props) {
   // The library needs DOM nodes of every single item we want to reorder
-  // This custom hook will add React ref to the element and then push respective DOM node to the array on nodes on mount
+  // This custom hook will add React ref to the element and then push respective DOM node to the array on nodes
   return <div {...useSortableElement()}>{props.children}</div>;
 }
 
