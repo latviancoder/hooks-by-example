@@ -9,7 +9,7 @@ function Item(props) {
 
 function List() {
   // We pass array of items to custom hook which will 1) reorder them after every 'dragEnd' 2) automatically update our list
-  // There is no "onSortingEnded" callback. We are basically saying:
+  // There is no "onSortingEnded" callback and there is no need to use setState. We are basically saying:
   // "Hey, I don't want to think about this, just do the necessary stuff and update my component"
   const items = useSortable(['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5']);
 
