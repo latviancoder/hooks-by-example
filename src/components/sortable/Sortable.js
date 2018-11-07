@@ -105,18 +105,18 @@ function Sortable(props) {
   }
 
   // Event handlers
-  function dragStart(e) {
+  function onDragStart(e) {
     const clientY = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
     if (state.nodes.some(node => node === e.target)) {
       dispatch({ type: 'DRAG_START', payload: { initialY: clientY, node: e.target } });
     }
   }
 
-  function dragEnd() {
+  function onDragEnd() {
     dispatch({ type: 'DRAG_END' });
   }
 
-  function drag(e) {
+  function onDrag(e) {
     if (state.isDragging) {
       e.preventDefault();
 
@@ -125,22 +125,98 @@ function Sortable(props) {
     }
   }
 
+  function addEventHandlers() {
+    containerRef.current.addEventListener('mousedown', onDragStart, false);
+    window.addEventListener('mousemove', onDrag, false);
+    window.addEventListener('mouseup', onDragEnd, false);
+    containerRef.current.addEventListener("touchstart", onDragStart, false);
+    window.addEventListener("touchend", onDragEnd, false);
+    window.addEventListener("touchmove", onDrag, false);
+  }
+
+  function removeEventHandlers() {
+    containerRef.current.removeEventListener('mousedown', onDragStart, false);
+    window.removeEventListener('mousemove', onDrag, false);
+    window.removeEventListener('mouseup', onDragEnd, false);
+    containerRef.current.removeEventListener("touchstart", onDragStart, false);
+    window.removeEventListener("touchend", onDragEnd, false);
+    window.removeEventListener("touchmove", onDrag, false);
+  }
+
+  function startDragging() {
+    const originalRect = state.draggedElement.node.getBoundingClientRect();
+
+    // We don't manipulate the original draggable node, but the duplicate
+    // We append it to body, position exactly above original, move it around the page and remove after dragging has ended
+    state.duplicateNode.style.position = 'absolute';
+    state.duplicateNode.style.left = `${originalRect.left}px`;
+    state.duplicateNode.style.top = `${originalRect.top}px`;
+    state.duplicateNode.style.height = `${originalRect.height}px`;
+    state.duplicateNode.style.width = `${originalRect.width}px`;
+
+    document.body.appendChild(state.duplicateNode);
+
+    // Hide original node
+    state.draggedElement.node.style.visibility = 'hidden';
+
+    // We want to animate our nodes
+    state.nodes.forEach((node, i) => {
+      if (i !== state.draggedElementIndex) {
+        node.style.webkitTransition = 'transform 0.3s';
+      }
+    });
+  }
+
+  function endDragging() {
+    document.body.removeChild(state.duplicateNode);
+    state.draggedElement.node.style.visibility = 'visible';
+    state.nodes.forEach(node => {
+      node.style.webkitTransition = '';
+      node.style.transform = '';
+    });
+  }
+
+  // Move duplicate node across the screen
+  // We don't use HTML5 drag and drop API and do the whole dragging animation manually
+  function doDraggingAnimation() {
+    state.duplicateNode.style.transform = `translate3d(0, ${state.currentY}px, 0)`;
+  }
+
+  function doReorderingAnimations() {
+    const draggedRect = state.draggedElement.rect;
+    const offset = state.currentY + draggedRect.y + draggedRect.height / 2;
+
+    const draggedElementIndex = state.draggedElementIndex;
+
+    // Computer science baby! This is where reordering animation happens
+    // Every time cursor position changes we decide which node to move up/down using translate3D
+    // Algorithm is crappy, but the purpose of this library is not to become better at algorithms
+    state.nodes.forEach((node, index) => {
+      const rect = node.getBoundingClientRect();
+      // We do nothing with the node that is currently dragged
+      if (index !== draggedElementIndex) {
+        if (offset > rect.y && draggedElementIndex < index) {
+          state.nodes[index].style.transform = `translate3d(0, -${draggedRect.height}px, 0)`;
+        } else if (offset < rect.y + rect.height && draggedElementIndex > index) {
+          state.nodes[index].style.transform = `translate3d(0, ${draggedRect.height}px, 0)`;
+        } else {
+          state.nodes[index].style.transform = `translate3d(0, 0, 0)`;
+        }
+      }
+
+      // Update newIndex in state, we will expose this variable to children
+      if (offset > rect.y && offset < rect.y + rect.height) {
+        dispatch({ type: 'SET_NEW_INDEX', payload: index });
+      }
+    });
+  }
+
   // Assignment of event handlers
   useEffect(() => {
-    containerRef.current.addEventListener('mousedown', dragStart, false);
-    window.addEventListener('mousemove', drag, false);
-    window.addEventListener('mouseup', dragEnd, false);
-    containerRef.current.addEventListener("touchstart", dragStart, false);
-    window.addEventListener("touchend", dragEnd, false);
-    window.addEventListener("touchmove", drag, false);
+    addEventHandlers();
     // If your effect returns a function React will run it when it is time to clean up (componentWillUnmount)
     return () => {
-      containerRef.current.removeEventListener('mousedown', dragStart, false);
-      window.removeEventListener('mousemove', drag, false);
-      window.removeEventListener('mouseup', dragEnd, false);
-      containerRef.current.removeEventListener("touchstart", dragStart, false);
-      window.removeEventListener("touchend", dragEnd, false);
-      window.removeEventListener("touchmove", drag, false);
+      removeEventHandlers();
     }
     // So this part here is confusing
     // Theoretically all of our event listeners should only be initialized on mount (useEffect(..., []))
@@ -153,73 +229,21 @@ function Sortable(props) {
   // Stuff we do when dragging started/ended
   useEffect(() => {
     if (state.isDragging) {
-      const originalRect = state.draggedElement.node.getBoundingClientRect();
-
-      // We don't manipulate the original draggable node, but the duplicate
-      // We append it to body, position exactly above original, move it around the page and remove after dragging has ended
-      state.duplicateNode.style.position = 'absolute';
-      state.duplicateNode.style.left = `${originalRect.left}px`;
-      state.duplicateNode.style.top = `${originalRect.top}px`;
-      state.duplicateNode.style.height = `${originalRect.height}px`;
-      state.duplicateNode.style.width = `${originalRect.width}px`;
-
-      document.body.appendChild(state.duplicateNode);
-
-      // Hide original node
-      state.draggedElement.node.style.visibility = 'hidden';
-
-      // We want to animate our nodes
-      state.nodes.forEach((node, i) => {
-        if (i !== state.draggedElementIndex) {
-          node.style.webkitTransition = 'transform 0.3s';
-        }
-      });
+      startDragging();
     } else {
       if (state.draggedElement) {
         // Cleanup after dragging has ended
         // Remove duplicate, show original node, remove transformations and transitions
-        document.body.removeChild(state.duplicateNode);
-        state.draggedElement.node.style.visibility = 'visible';
-        state.nodes.forEach(node => {
-          node.style.webkitTransition = '';
-          node.style.transform = '';
-        });
+        endDragging();
       }
     }
   }, [state.isDragging]);
 
+  // This gets called every time the Y coordinate of our dragged element has changed (often)
   useEffect(() => {
     if (state.duplicateNode) {
-      // Move duplicate node across the screen
-      // We don't use HTML5 drag and drop API and do the whole dragging animation manually
-      state.duplicateNode.style.transform = `translate3d(0, ${state.currentY}px, 0)`;
-
-      const draggedRect = state.draggedElement.rect;
-      const offset = state.currentY + draggedRect.y + draggedRect.height / 2;
-
-      const draggedElementIndex = state.draggedElementIndex;
-
-      // Computer science baby! This is where reordering animation happens
-      // Every time cursor position changes we decide which node to move up/down using translate3D
-      // Algorithm is crappy, but the purpose of this library is not to become better at algorithms
-      state.nodes.forEach((node, index) => {
-        const rect = node.getBoundingClientRect();
-        // We do nothing with the node that is currently dragged
-        if (index !== draggedElementIndex) {
-          if (offset > rect.y && draggedElementIndex < index) {
-            state.nodes[index].style.transform = `translate3d(0, -${draggedRect.height}px, 0)`;
-          } else if (offset < rect.y + rect.height && draggedElementIndex > index) {
-            state.nodes[index].style.transform = `translate3d(0, ${draggedRect.height}px, 0)`;
-          } else {
-            state.nodes[index].style.transform = `translate3d(0, 0, 0)`;
-          }
-        }
-
-        // Update newIndex in state, we will expose this variable to children
-        if (offset > rect.y && offset < rect.y + rect.height) {
-          dispatch({ type: 'SET_NEW_INDEX', payload: index });
-        }
-      });
+      doDraggingAnimation();
+      doReorderingAnimations();
     }
   }, [state.currentY]);
 
