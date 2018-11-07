@@ -49,8 +49,8 @@ function useSortable(initialItems) {
   return items;
 }
 
-// This is the whole state of the library is managed
-// this "produce" stuff comes from immer and makes updating immutable data less painful
+// This is where the state is managed
+// "produce" stuff comes from immer and makes updating immutable data less painful
 function reducer(state, action) {
   switch (action.type) {
     // When sortable components are mounted they are added to "elements" array
@@ -129,8 +129,7 @@ function Sortable(props) {
     containerRef.current.addEventListener("touchstart", dragStart, false);
     window.addEventListener("touchend", dragEnd, false);
     window.addEventListener("touchmove", drag, false);
-    // If your effect returns a function React will run it when it is time to clean up
-    // This has similar logic to componentWillUnmount
+    // If your effect returns a function React will run it when it is time to clean up (componentWillUnmount)
     return () => {
       containerRef.current.removeEventListener('mousedown', dragStart, false);
       window.removeEventListener('mousemove', drag, false);
@@ -167,7 +166,7 @@ function Sortable(props) {
 
       // We want to animate our nodes
       state.nodes.forEach((node, i) => {
-        if (i !== state.draggedElement.draggedElement) {
+        if (i !== state.draggedElementIndex) {
           node.style.webkitTransition = 'transform 0.3s';
         }
       });
