@@ -2,9 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import AccordionScreen from './components/accordion';
-import Screen from './components/form-library';
+import FormLibraryScreen from './components/form-library';
 import WindowWidthScreen from './components/window-width';
-import TodoList from "./components/todo-list";
+import TodoList from './components/todo-list';
+import SortableScreen from "./components/sortable";
 
 function App() {
   return (
@@ -38,14 +39,20 @@ function App() {
             </Link>
             <span>Look mum, <pre>useReducer</pre> is almost Redux!</span>
           </div>
+          <div className="item">
+            <Link className="link" to="/sortable">
+             Sortable
+            </Link>
+          </div>
         </nav>
 
         <div className="content">
           <Route path="/" exact component={() => <div>use navigation on the left</div>}/>
           <Route path="/accordion" component={AccordionScreen}/>
-          <Route path="/form-library" component={Screen}/>
+          <Route path="/form-library" component={FormLibraryScreen}/>
           <Route path="/window-width" component={WindowWidthScreen}/>
           <Route path="/todo-list" component={TodoList}/>
+          <Route path="/sortable" component={SortableScreen}/>
         </div>
       </div>
     </Router>

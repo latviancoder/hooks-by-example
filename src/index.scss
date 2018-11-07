@@ -1,5 +1,9 @@
 @import "../node_modules/normalize.css/normalize.css";
 
+body {
+  font-family: "Helvetica Neue", sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -8,7 +12,6 @@
   min-height: 100vh;
   display: flex;
   align-items: stretch;
-  font-family: "Helvetica Neue", sans-serif;
 }
 
 .link {
