@@ -43,9 +43,5 @@
   ],
   "devDependencies": {
     "eslint-plugin-react-hooks": "^0.0.0"
-  },
-  "now": {
-    "alias": "awesome-hooks.now-sh",
-    "name": "awesome-hooks"
   }
 }
