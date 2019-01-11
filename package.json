@@ -3,20 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/core": "^10.0.5",
     "foobar-ipsum": "^1.0.3",
     "immer": "^1.7.4",
     "node-sass": "^4.9.4",
     "normalize.css": "^8.0.0",
     "react": "16.7.0-alpha.0",
+    "react-cache": "^2.0.0-alpha.1",
+    "react-clock": "^2.3.0",
     "react-dom": "16.7.0-alpha.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
+    "reactjs-simple-spinner": "^0.0.5",
+    "scheduler": "^0.12.0",
     "scroll-into-view-if-needed": "^2.2.20",
     "simple-react-router": "^0.0.17",
     "yup": "^0.26.6"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=3006 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
