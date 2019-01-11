@@ -11,7 +11,6 @@ import SortableScreen from "./components/sortable";
 import Concurrent1 from "./components/concurrent/Concurrent1";
 import Concurrent2 from "./components/concurrent/Concurrent2";
 import Concurrent3 from "./components/concurrent/Concurrent3";
-import Concurrent3After from "./components/concurrent/Concurrent3_after";
 
 const Homepage = () => {
   return <div>use navigation on the left</div>;
@@ -92,7 +91,6 @@ function App() {
         <Route path="/concurrent1" component={Concurrent1} />
         <Route path="/concurrent2" component={Concurrent2} />
         <Route path="/concurrent3" component={Concurrent3} />
-        <Route path="/concurrent3-after" component={Concurrent3After} />
       </div>
     </div>
   </Router>;
