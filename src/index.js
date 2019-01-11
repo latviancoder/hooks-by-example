@@ -5,4 +5,11 @@ import './index.scss';
 
 import App from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const mode = window.localStorage.getItem('mode');
+if (!mode || mode === 'sync') {
+  // Synchronous
+  ReactDOM.render(<App/>, document.getElementById('root'));
+} else {
+  // Concurrent
+  ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+}

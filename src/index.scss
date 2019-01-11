@@ -36,6 +36,9 @@ body {
   pre {
     display: inline;
   }
+  @media (max-width: 800px) {
+    display: none;
+  }
 }
 
 .content {
@@ -49,4 +52,11 @@ body {
   padding: 5px;
   border: 1px dashed #000;
   margin-bottom: 5px;
+}
+
+.sync-async {
+  position: fixed;
+  top: 30px;
+  right: 40px;
+  cursor: pointer;
 }
