@@ -8,10 +8,11 @@ The most important feature of hooks is sharing _reusable functionality_. In the 
 
 The purpose of this reposity is to provide beginner-friendly real-world examples of different hooks usage. Here are some of them:
 
-* Accordion [[code](src/components/accordion), [demo](https://awesome-hooks.now.sh/accordion)]
-* Todo list [[code](src/components/todo-list), [demo](https://awesome-hooks.now.sh/todo-list)]
-* Form validation library [[code](src/components/form-library), [demo](https://awesome-hooks.now.sh/form-library)]
-* Sortable [[code](src/components/sortable), [demo](https://awesome-hooks.now.sh/sortable)]
+* Accordion [[code](src/components/accordion), [demo](https://hooks-by-example.now.sh/accordion)]
+* Todo list [[code](src/components/todo-list), [demo](https://hooks-by-example.now.sh/todo-list)]
+* Form validation library [[code](src/components/form-library), [demo](https://hooks-by-example.now.sh/form-library)]
+* Sortable [[code](src/components/sortable), [demo](https://hooks-by-example.now.sh/sortable)]
+* Concurrent React experiments
 
 This application is built using `create-react-app`, so feel free to clone the repo and play with examples yourself.
 
