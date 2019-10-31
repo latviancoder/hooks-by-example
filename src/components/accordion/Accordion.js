@@ -15,20 +15,19 @@ function useAccordion() {
 // We also pass second parameter to this function where we implement our own comparison
 const AccordionPanel = React.memo(
   props => {
-    console.log(props.label + " rendered");
+    const { label, onClick, isOpen, content } = props
+    console.log(label + " rendered");
     const containerRef = useRef();
 
     useEffect(() => {
-      if (props.isOpen) {
-        console.log(`scroll ${props.label} into view`);
-        scrollIntoView(containerRef.current, { block: 'nearest', scrollMode: 'if-needed' });
-      }
-    });
+      console.log(`scroll ${label} into view`);
+      scrollIntoView(containerRef.current, { block: 'nearest', scrollMode: 'if-needed' });
+    }, [isOpen]);
 
     return (
-      <div onClick={props.onClick} ref={containerRef}>
-        <div className="accordion-label">{props.label}</div>
-        {props.isOpen && <div>{props.content}</div>}
+      <div onClick={onClick} ref={containerRef}>
+        <div className="accordion-label">{label}</div>
+        {isOpen && <div>{content}</div>}
       </div>
     );
   }, // practically shouldComponentUpdate, but reversed
